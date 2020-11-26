@@ -1,0 +1,16 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+i {
+    font-size: 1.2rem;
+}
+
+header {
+    min-height: 100vh;
+}
+
+.completed-task {
+    text-decoration: line-through;
+}
