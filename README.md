@@ -1,2 +1,4 @@
 # Task Management App
-This is a Task Management With CRUD Operation using Module Design Pattern 
+1. Create | Read | Update | Delete Operation
+2. Module Design Pattern
+Live: https://nabedkhan.github.io/task-management-app/
