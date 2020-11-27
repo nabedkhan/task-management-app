@@ -28,6 +28,7 @@ const storageControllers = (function () {
             tasks.forEach((task, index) => {
                 if (task.id === updateTask.id) {
                     tasks.splice(index, 1, updateTask);
+                    task.completed = updateTask.completed;
                 }
             });
             localStorage.setItem('tasks', JSON.stringify(tasks));
@@ -37,15 +38,6 @@ const storageControllers = (function () {
             tasks.forEach((task, index) => {
                 if (task.id === deleteTask.id) {
                     tasks.splice(index, 1);
-                }
-            });
-            localStorage.setItem('tasks', JSON.stringify(tasks));
-        },
-        completedTaskFromStorage(completedTask) {
-            const tasks = JSON.parse(localStorage.getItem('tasks'));
-            tasks.forEach((task, index) => {
-                if (task.id === completedTask.id) {
-                    tasks.splice(index, 1, completedTask);
                 }
             });
             localStorage.setItem('tasks', JSON.stringify(tasks));
@@ -64,7 +56,7 @@ const tasksControllers = (function (storageControllers) {
             return data.tasks
         },
         addTask(task) {
-            const id = data.tasks.length > 0 ? data.tasks.length : 0;
+            const id = data.tasks.length > 0 ? data.tasks[data.tasks.length - 1].id + 1 : 0;
             const newTask = {
                 id,
                 name: task,
@@ -232,8 +224,7 @@ const appControllers = (function (tasksControllers, uiControllers, storageContro
             uiControllers.populateTask(tasks);
             const completedTaskCountLength = tasksControllers.completedTaskCount();
             uiControllers.totalCompletedCount(completedTaskCountLength);
-            // console.log(completedTask);
-            storageControllers.completedTaskFromStorage(completedTask);
+            storageControllers.updateTasksFromStorage(completedTask);
         }
     }
     function addTaskSubmit(e) {
@@ -281,13 +272,13 @@ const appControllers = (function (tasksControllers, uiControllers, storageContro
     }
     return {
         init() {
+            uiControllers.clearEditState();
             const totalTaskLength = tasksControllers.totalTaskCount();
             uiControllers.totalTaskCount(totalTaskLength);
             const completedTaskCountLength = tasksControllers.completedTaskCount();
             uiControllers.totalCompletedCount(completedTaskCountLength);
             const tasks = tasksControllers.getTasks();
             uiControllers.populateTask(tasks);
-            uiControllers.clearEditState();
             loadEventListeners();
         }
     }
